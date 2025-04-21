@@ -1,11 +1,17 @@
-import React from 'react'
+import React from "react";
+import Herosection from "../components/Herosection";
+import EventPage from "../components/EventPage";
+import EventCategory from "../components/EventCategory";
 
 const Home = () => {
   return (
-    <div>
-      Home
-    </div>
-  )
-}
+    <>
+      <Herosection />
 
-export default Home
+      <EventCategory/>
+      <EventPage />
+    </>
+  );
+};
+
+export default Home;
