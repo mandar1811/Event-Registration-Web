@@ -66,3 +66,26 @@ def get_my_registrations():
 
     # Return the registrations as a JSON response
     return jsonify(registrations), 200
+
+@registration_bp.route('/registrations', methods=['GET'])
+@jwt_required()
+def get_all_registrations():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user or not user.is_admin:
+        return jsonify({"msg": "Admins only"}), 403
+
+    registrations = Registration.query.all()
+    data = []
+
+    for reg in registrations:
+        data.append({
+            "id": reg.id,
+            "user_id": reg.user_id,
+            "username": reg.user.username if reg.user else None,
+            "event_id": reg.event_id,
+            "event_title": reg.event.title if reg.event else None
+        })
+
+    return jsonify(data), 200

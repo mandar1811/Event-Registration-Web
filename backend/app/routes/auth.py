@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from app.services.user_service import create_user, find_user_by_username, check_password
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from app.models.user import User
+from app.models.registration import Registration
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -35,7 +37,8 @@ def login():
         )
         return jsonify({
             "access_token": access_token,
-            "is_admin": int(user.is_admin)  # Ensure it's 0 or 1 in the response
+            "is_admin": int(user.is_admin) ,
+             "username":user.username # Ensure it's 0 or 1 in the response
         }), 200
 
     return jsonify({"msg": "Invalid credentials"}), 401
@@ -56,3 +59,25 @@ def test_protected():
     # e.g., user = User.query.get(identity)
     
     return jsonify({"logged_in_as": identity}), 200
+
+@auth_bp.route('/users', methods=['GET'])
+@jwt_required()
+def get_all_users():
+    # Optional: Check if requester is admin
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user or not user.is_admin:
+        return jsonify({"msg": "Admins only"}), 403
+
+    users = User.query.all()
+    user_data = [
+        {
+            "id": u.id,
+            "username": u.username,
+            "email": u.email,
+            "is_admin": u.is_admin
+        }
+        for u in users
+    ]
+
+    return jsonify(user_data), 200
