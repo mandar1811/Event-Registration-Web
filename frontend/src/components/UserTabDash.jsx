@@ -1,5 +1,6 @@
-import { ChevronLeft, ChevronRight, Search, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const UserTabDash = () => {
   const [users, setUsers] = useState([]);
@@ -8,15 +9,21 @@ const UserTabDash = () => {
   const itemsPerPage = 5;
 
   useEffect(() => {
-    const mockUsers = [
-      { id: 1, username: "alice_j", email: "alice@example.com", role: "Admin" },
-      { id: 2, username: "bob_smith", email: "bob@example.com", role: "User" },
-      { id: 3, username: "carol_lee", email: "carol@example.com", role: "User" },
-      { id: 4, username: "david_kim", email: "david@example.com", role: "Admin" },
-      { id: 5, username: "eve_thomas", email: "eve@example.com", role: "User" },
-      { id: 6, username: "frank_white", email: "frank@example.com", role: "User" },
-    ];
-    setUsers(mockUsers);
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const response = await axios.get("http://localhost:5000/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   const filteredUsers = users.filter(
@@ -32,7 +39,6 @@ const UserTabDash = () => {
 
   return (
     <div className="">
-    
       {/* Search Input */}
       <div className="bg-white rounded-lg shadow mb-6 p-4">
         <div className="relative">
@@ -51,7 +57,7 @@ const UserTabDash = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto bg-white  rounded-tl-lg rounded-tr-lg shadow-lg">
+      <div className="overflow-x-auto bg-white rounded-tl-lg rounded-tr-lg shadow-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -75,12 +81,12 @@ const UserTabDash = () => {
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                       ${
-                        user.role === "Admin"
+                        user.is_admin == 1
                           ? "bg-blue-100 text-blue-800"
                           : "bg-gray-100 text-gray-800"
                       }`}
                   >
-                    {user.role}
+                    {user.is_admin ==1 ? "Admin" :"User"}
                   </span>
                 </td>
               </tr>
@@ -114,9 +120,7 @@ const UserTabDash = () => {
           <span className="text-sm font-medium">{currentPage}</span>
           <button
             className="p-2 border rounded-md"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
             <ChevronRight size={18} />

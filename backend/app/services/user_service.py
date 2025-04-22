@@ -7,7 +7,7 @@ def create_user(username, email, password, is_admin=False):
         username=username,
         email=email,
         password_hash=password_hash,
-        is_admin=is_admin  # ✅ Include this!
+        is_admin=is_admin 
     )
     db.session.add(user)
     db.session.commit()

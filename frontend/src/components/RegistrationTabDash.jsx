@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const RegistrationTabDash = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -8,36 +9,38 @@ const RegistrationTabDash = () => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
+console.log(registrations)
   useEffect(() => {
-    const mockRegistrations = [
-      { id: 1, user: "Alice Johnson", event: "Annual Tech Conference" },
-      { id: 2, user: "Bob Smith", event: "Networking Mixer" },
-      { id: 3, user: "Carol Lee", event: "Leadership Workshop" },
-      { id: 4, user: "David Kim", event: "Tech Conference" },
-      { id: 5, user: "Eve Thomas", event: "Launch Party" },
-      { id: 6, user: "Frank White", event: "Tech Conference" },
-    ];
-    setRegistrations(mockRegistrations);
+    const fetchRegistrations = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const response = await axios.get("http://localhost:5000/registrations", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response)
+        setRegistrations(response.data);
+      } catch (error) {
+        console.error("Error fetching registrations:", error);
+      }
+    };
+
+    fetchRegistrations();
   }, []);
 
   const filteredRegistrations = registrations.filter(
     (reg) =>
-      reg.user.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      reg.event.toLowerCase().includes(searchQuery.toLowerCase())
+      reg.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      reg.event_title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const startIdx = (currentPage - 1) * itemsPerPage;
-  const paginated = filteredRegistrations.slice(
-    startIdx,
-    startIdx + itemsPerPage
-  );
+  const paginated = filteredRegistrations.slice(startIdx, startIdx + itemsPerPage);
   const totalPages = Math.ceil(filteredRegistrations.length / itemsPerPage);
 
   return (
     <div className="">
-    
-
       {/* Search Input */}
       <div className="bg-white rounded-lg shadow mb-6 p-4">
         <div className="relative">
@@ -56,7 +59,7 @@ const RegistrationTabDash = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto bg-white  rounded-tl-lg rounded-tr-lg shadow-lg">
+      <div className="overflow-x-auto bg-white rounded-tl-lg rounded-tr-lg shadow-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -71,8 +74,8 @@ const RegistrationTabDash = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {paginated.map((reg) => (
               <tr key={reg.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{reg.user}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{reg.event}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{reg.username}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{reg.event_title}</td>
               </tr>
             ))}
             {paginated.length === 0 && (
@@ -104,11 +107,7 @@ const RegistrationTabDash = () => {
           <span className="text-sm font-medium">{currentPage}</span>
           <button
             className="p-2 border rounded-md"
-            onClick={() =>
-              setCurrentPage((prev) =>
-                Math.min(prev + 1, totalPages)
-              )
-            }
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
           >
             <ChevronRight size={18} />
