@@ -11,6 +11,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
 import AllEvent from "./pages/AllEvent";
 import SearchResults from "./components/SearchResults";
+import CreateForm from "./pages/CreateForm";
 
 const AppWrapper = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const AppWrapper = () => {
           <Route path="/event/:id" element={<EventDetailPage />} />
           <Route path="/allEvents" element={<AllEvent />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/create-event" element={<CreateForm/>}/>
         </Routes>
       </ScrollToTop>
       {!isDashboard && <Footer />}

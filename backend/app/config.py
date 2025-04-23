@@ -1,9 +1,11 @@
 import os
-
+from datetime import timedelta
 class Config:
     # App secrets
     SECRET_KEY = os.environ.get("SECRET_KEY", "supersecretkey")
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "jwt-secret")
+
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=2)
 
     # Database
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:root123@localhost/event_db"

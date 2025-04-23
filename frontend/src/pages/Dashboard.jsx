@@ -19,6 +19,7 @@ import EventsByMonthChart from "../components/EventsByMonthChart";
 import EventTabDash from "../components/EventTabDash";
 import RegistrationTabDash from "../components/RegistrationTabDash";
 import UserTabDash from "../components/UserTabDash";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   // State management
@@ -31,70 +32,6 @@ export default function Dashboard() {
     totalRegistrations: 0,
     activeEvents: 0,
   });
-
-  // Mock data initialization
-  useEffect(() => {
-    // In a real app, this would be API calls
-    const mockEvents = [
-      {
-        id: 1,
-        title: "Annual Tech Conference",
-        date: "2025-05-15",
-        location: "Convention Center",
-        capacity: 500,
-        registrations: 342,
-        category: "Conference",
-      },
-      {
-        id: 2,
-        title: "Networking Mixer",
-        date: "2025-04-30",
-        location: "Downtown Hotel",
-        capacity: 120,
-        registrations: 98,
-        category: "Meetups",
-      },
-      {
-        id: 3,
-        title: "Workshop: Leadership Skills",
-        date: "2025-06-10",
-        location: "Training Center",
-        capacity: 50,
-        registrations: 23,
-        category: "Workshop",
-      },
-      {
-        id: 4,
-        title: "Product Launch Party",
-        date: "2025-03-25",
-        location: "Main Auditorium",
-        capacity: 300,
-        registrations: 300,
-        category: "Workshop",
-      },
-    ];
-
-    setEvents(mockEvents);
-
-    // Calculate stats
-    setStats({
-      totalEvents: mockEvents.length,
-      totalUsers: 1250,
-      totalRegistrations: mockEvents.reduce(
-        (sum, event) => sum + event.registrations,
-        0
-      ),
-      activeEvents: mockEvents.filter((event) => event.status === "active")
-        .length,
-    });
-  }, []);
-
-  const filteredEvents = events.filter(
-    (event) =>
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -185,10 +122,10 @@ export default function Dashboard() {
             }
            
             {activeTab === "events" && (
-              <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
+              <Link to={"/create-event"} className="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
                 <CirclePlus size={18} className="mr-2" />
                 Add Event
-              </button>
+              </Link>
             )}
           </div>
         </header>
