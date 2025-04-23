@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import EventCard from "./EventCard"; // Import the EventCard component
 import EventGrid from "./EventGrid";
 
 const SearchResults = () => {

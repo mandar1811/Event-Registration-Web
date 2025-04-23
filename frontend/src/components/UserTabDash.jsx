@@ -17,7 +17,9 @@ const UserTabDash = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        
         setUsers(response.data);
+       
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -28,9 +30,9 @@ const UserTabDash = () => {
 
   const filteredUsers = users.filter(
     (user) =>
-      user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+      user.username?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+      user.role?.toLowerCase().includes(searchQuery?.toLowerCase())
   );
 
   const startIdx = (currentPage - 1) * itemsPerPage;

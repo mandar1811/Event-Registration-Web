@@ -34,7 +34,7 @@ const EventCard = ({ event }) => {
 
   return (
     <Link
-    to={`/event/${event.id}`}
+    to={`/event/${event.id || event.event_id}`}
       className="cursor-pointer" 
       
     >

@@ -11,18 +11,16 @@ import PopularCities from "./PopularCities";
 import HeroImg from "../../src/assets/hero.png";
 import { useNavigate } from "react-router-dom";
 
-
 const Herosection = () => {
   const [email, setEmail] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  
+
   const handleSearch = () => {
     if (searchTerm.trim() !== "") {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,19 +52,19 @@ const Herosection = () => {
               <div className="flex-grow flex items-center px-3 mb-2 sm:mb-0">
                 <Search className="h-5 w-5 text-gray-400 mr-2" />
                 <input
-  type="text"
-  placeholder="Search for events..."
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  className="w-full bg-transparent outline-none text-gray-700"
-/>
+                  type="text"
+                  placeholder="Search for events..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-transparent outline-none text-gray-700"
+                />
               </div>
               <button
-  onClick={handleSearch}
-  className="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 transition-colors"
->
-  Find Events
-</button>
+                onClick={handleSearch}
+                className="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 transition-colors"
+              >
+                Find Events
+              </button>
             </div>
           </div>
 

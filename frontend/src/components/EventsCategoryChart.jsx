@@ -1,5 +1,6 @@
 // src/components/EventsCategoryChart.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   BarChart,
   Bar,
@@ -11,12 +12,35 @@ import {
 } from 'recharts';
 
 const EventsCategoryChart = () => {
-  const categoryData = [
-    { category: 'Festival', count: 6 },
-    { category: 'Conference', count:23 },
-    { category: 'Workshop', count: 12 },
-    { category: 'Meetups', count:15 },
-  ];
+  const [categoryData, setCategoryData] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/events');
+        const events = response.data;
+
+        // Count occurrences of each category
+        const categoryCounts = events.reduce((acc, event) => {
+          const category = event.category || 'Uncategorized';
+          acc[category] = (acc[category] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Convert the object to an array suitable for Recharts
+        const chartData = Object.entries(categoryCounts).map(([category, count]) => ({
+          category,
+          count,
+        }));
+
+        setCategoryData(chartData);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   return (
     <div className="bg-white rounded-lg shadow p-6">

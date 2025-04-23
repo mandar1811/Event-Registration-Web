@@ -6,7 +6,7 @@ const EventCategory = () => {
   const navigate = useNavigate();
 
   const categories = [
-    { icon: <Users className="h-8 w-8" />, name: "Conferences", color: "bg-blue-100 text-blue-600" },
+    { icon: <Users className="h-8 w-8" />, name: "Conference", color: "bg-blue-100 text-blue-600" },
     { icon: <Clock className="h-8 w-8" />, name: "Workshops", color: "bg-green-100 text-green-600" },
     { icon: <MapPin className="h-8 w-8" />, name: "Meetups", color: "bg-yellow-100 text-yellow-600" },
     { icon: <Calendar className="h-8 w-8" />, name: "Festivals", color: "bg-pink-100 text-pink-600" }

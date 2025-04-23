@@ -25,6 +25,7 @@ const Login = () => {
       let is_admin=res.data.is_admin;
       localStorage.setItem("access_token",access_token);
       localStorage.setItem("is_admin",is_admin)
+      localStorage.setItem("username",username)
     //   toa(res.data.message)
     if(res.data.is_admin==1){
       navigate("/dashboard")

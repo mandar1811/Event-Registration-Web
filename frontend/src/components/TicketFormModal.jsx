@@ -35,22 +35,32 @@ function TicketFormModal({ show, setShow, event, isLoading, setIsLoading }) {
       return;
     }
 
-    const payload = {
-      user_name: formData.name,
-      user_email: formData.email,
-      user_phone: formData.phone,
-      event_name: event.title,
-      event_date: formatDate(event.date),
-      event_venue: event.venue,
-      event_category: event.category,
-      event_price: event.price === 0 ? "Free" : `Rs${event.price}`,
-    };
-
     try {
-      await axios.post("http://localhost:5000/send-confirmation", payload);
+      const token=localStorage.getItem("access_token")
+      
+      await axios.post(`http://localhost:5000/events/${event.id}/register`,{},  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Step 2: Send confirmation email
+      const emailPayload = {
+        user_name: formData.name,
+        user_email: formData.email,
+        user_phone: formData.phone,
+        event_name: event.title,
+        event_date: formatDate(event.date),
+        event_venue: event.venue,
+        event_category: event.category,
+        event_price: event.price === 0 ? "Free" : `Rs${event.price}`,
+      };
+      await axios.post("http://localhost:5000/send-confirmation", emailPayload);
+
       setFormSubmitted(true);
     } catch (err) {
-      console.error("Error sending confirmation:", err);
+      console.error("Error:", err);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

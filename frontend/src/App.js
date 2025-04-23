@@ -12,6 +12,8 @@ import Footer from "./components/Footer";
 import AllEvent from "./pages/AllEvent";
 import SearchResults from "./components/SearchResults";
 import CreateForm from "./pages/CreateForm";
+import UpdateEvent from "./components/UpdateEvent";
+import MyProfile from "./pages/MyProfile";
 
 const AppWrapper = () => {
   const location = useLocation();
@@ -30,6 +32,8 @@ const AppWrapper = () => {
           <Route path="/allEvents" element={<AllEvent />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/create-event" element={<CreateForm/>}/>
+          <Route path="/update-event/:eventId" element={<UpdateEvent/>}/>
+          <Route path="/profile" element={<MyProfile/>}></Route>
         </Routes>
       </ScrollToTop>
       {!isDashboard && <Footer />}

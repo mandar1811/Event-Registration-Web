@@ -20,18 +20,43 @@ import EventTabDash from "../components/EventTabDash";
 import RegistrationTabDash from "../components/RegistrationTabDash";
 import UserTabDash from "../components/UserTabDash";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Dashboard() {
   // State management
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [events, setEvents] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [stats, setStats] = useState({
-    totalEvents: 0,
-    totalUsers: 0,
-    totalRegistrations: 0,
-    activeEvents: 0,
-  });
+  const [eventCount, setEventCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  const [registrationCount, setRegistrationCount] = useState(0);
+  useEffect(() => {
+    const token =localStorage.getItem("access_token")
+    const fetchCounts = async () => {
+      try {
+        const eventsRes = await axios.get("http://localhost:5000/events");
+        setEventCount(eventsRes.data.length);
+
+        const usersRes = await axios.get("http://localhost:5000/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        setUserCount(usersRes.data.length);
+
+        const registrationsRes = await axios.get("http://localhost:5000/registrations", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        setRegistrationCount(registrationsRes.data.length);
+      } catch (error) {
+        console.error("Error fetching counts:", error);
+      }
+    };
+
+    fetchCounts();
+  }, []);
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -141,7 +166,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-gray-500 text-sm">Total Events</h3>
-                      <p className="text-2xl font-bold">{stats.totalEvents}</p>
+                      <p className="text-2xl font-bold">{eventCount}</p>
                     </div>
                   </div>
                 </div>
@@ -152,7 +177,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-gray-500 text-sm">Total Users</h3>
-                      <p className="text-2xl font-bold">{stats.totalUsers}</p>
+                      <p className="text-2xl font-bold">{userCount}</p>
                     </div>
                   </div>
                 </div>
@@ -164,7 +189,7 @@ export default function Dashboard() {
                     <div className="ml-4">
                       <h3 className="text-gray-500 text-sm">Registrations</h3>
                       <p className="text-2xl font-bold">
-                        {stats.totalRegistrations}
+                        {registrationCount}
                       </p>
                     </div>
                   </div>
