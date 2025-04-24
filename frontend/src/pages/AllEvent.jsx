@@ -179,7 +179,7 @@ const AllEvent = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b  from-blue-50 to-white">
       {/* Hero Section with Carousel */}
       <div className="relative h-96 mb-8 overflow-hidden">
         {/* Background and overlay */}
@@ -195,7 +195,7 @@ const AllEvent = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-purple-900/60" />
         
         {/* Carousel Content */}
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+        <div className="relative h-full w-[90%] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
             Discover Amazing Events
           </h1>
@@ -276,7 +276,7 @@ const AllEvent = () => {
         </div>
       </div>
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-[90%] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filter Section */}
         <div className="mb-8 bg-white rounded-xl shadow-md p-4">
           <div className="flex flex-col md:flex-row gap-4">

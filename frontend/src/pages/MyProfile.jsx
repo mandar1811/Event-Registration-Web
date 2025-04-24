@@ -15,6 +15,7 @@ const MyProfile = () => {
               'Content-Type': 'application/json'
             }
           })
+          
           setEvent(res.data)
 
     }
