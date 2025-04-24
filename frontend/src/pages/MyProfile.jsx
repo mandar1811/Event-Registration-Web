@@ -4,7 +4,7 @@ import EventGrid from "../components/EventGrid";
 
 const MyProfile = () => {
   const [event, setEvent] = useState([]);
-  const username=localStorage.getItem("username")
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const getData=async()=>{
@@ -24,7 +24,10 @@ const MyProfile = () => {
   return (
     <>
       <div className="w-[90%]  mx-auto">
-        <h1 className="text-2xl font-bold mb-4 pl-8 py-4 mt-4">Hello, {username} 👋</h1>
+      <h1 className="text-2xl font-bold mb-4 pl-8 py-4 mt-4">
+      Hello, {username || "Guest"} 👋
+      </h1>
+
         <h2 className="text-xl font-semibold mb-2 pl-8">
           Your Event Registrations:
         </h2>
