@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { Calendar } from "lucide-react";
+import { motion } from "framer-motion";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -27,10 +28,18 @@ function Navbar() {
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <Calendar className="h-6 w-6 text-purple-600" />
-          <Link to={"/"} className="font-bold text-xl text-gray-800">EventHub</Link>
+          <Link 
+            to={"/"} 
+            className="font-bold text-xl relative overflow-hidden"
+          >
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">
+              EventHub
+            </span>
+            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-indigo-600 transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100"></span>
+          </Link>
         </div>
-
         {/* Desktop Navigation */}
+
         <div className="hidden md:flex space-x-8">
           <Link to="/allEvents" className="text-gray-600 hover:text-purple-600">
             All Events
