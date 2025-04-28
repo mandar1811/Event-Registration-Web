@@ -19,7 +19,7 @@ const PopularCities = () => {
     },
     {
       id: 3,
-      name: "Banglore",
+      name: "Bangalore",
       image: "https://www.agoda.com/wp-content/uploads/2024/07/bangalore-feature-1244x700.jpg",
       events: 85
     },
