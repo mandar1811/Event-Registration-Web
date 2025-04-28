@@ -143,7 +143,7 @@ const EventTabDash = () => {
                 <td className="px-6 py-4">
                   {event.registrations} / {event.capacity}
                 </td>
-                <td className="px-6 py-4 text-right">
+                <td className="px-6 py-4 text-right flex items-center justify-center">
                   <Link
                     to={`/update-event/${event.id}`}
                     className="text-blue-600 hover:text-blue-900 mr-3"

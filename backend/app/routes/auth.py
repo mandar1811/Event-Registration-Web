@@ -81,3 +81,22 @@ def get_all_users():
     ]
 
     return jsonify(user_data), 200
+
+@auth_bp.route('/registrations/<int:event_id>', methods=['DELETE'])
+@jwt_required()
+def delete_registration(event_id):
+    user_id = get_jwt_identity()
+
+    # Find the registration for this user and event
+    registration = Registration.query.filter_by(user_id=user_id, event_id=event_id).first()
+
+    if not registration:
+        return jsonify({"msg": "Registration not found"}), 404
+
+    # If found, delete it
+    from app.extensions import db  # (Import db if not already imported)
+    db.session.delete(registration)
+    db.session.commit()
+
+    return jsonify({"msg": "Registration deleted successfully"}), 200
+
