@@ -24,7 +24,7 @@ def send_confirmation():
                 f"Category: {data['event_category']}\n"
                 f"Price: {data['event_price']}\n\n"
                 "We look forward to seeing you there!\n\n"
-                "Regards,\nEvent Portal Team"
+                "Regards,\nEvent Hub Team"
             )
         )
         mail.send(msg)
@@ -33,3 +33,72 @@ def send_confirmation():
     except Exception as e:
         print(e)
         return jsonify({"error": "Failed to send email"}), 500
+
+# @email_bp.route('/send-cancellation', methods=['POST', 'OPTIONS'])
+# def send_cancellation():
+
+    # Handle preflight CORS request
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    data = request.json  # Expecting a list of users and event details
+
+    try:
+        users = data.get('users', [])
+        event_name = data.get('event_name')
+        event_date = data.get('event_date')
+        event_venue = data.get('event_venue')
+
+        for user in users:
+            msg = Message(
+                subject=f"Event Cancellation - {event_name}",
+                recipients=[user['email']],
+                body=(
+                    f"Hello {user['name']},\n\n"
+                    f"We regret to inform you that the event '{event_name}', originally scheduled for {event_date} at {event_venue}, "
+                    "has been canceled.\n\n"
+                    "We apologize for the inconvenience.\n\n"
+                    "Regards,\nEvent Portal Team"
+                )
+            )
+            mail.send(msg)
+
+        return jsonify({"message": "Cancellation emails sent successfully"}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Failed to send cancellation emails"}), 500
+
+@email_bp.route('/send-cancellation', methods=['POST', 'OPTIONS'])
+def send_cancellation():
+    # Handle preflight CORS request
+    if request.method == 'OPTIONS':
+        return '', 200
+
+    data = request.json  # Expecting a list of users and event details
+
+    try:
+        users = data.get('users', [])
+        event_name = data.get('event_name')
+        event_date = data.get('event_date')
+        event_venue = data.get('event_venue')
+
+        for user in users:
+            msg = Message(
+                subject=f"Event Cancellation - {event_name}",
+                recipients=[user['email']],
+                body=(
+                    f"Hello {user['name']},\n\n"
+                    f"We regret to inform you that the event '{event_name}', originally scheduled for {event_date} at {event_venue}, "
+                    "has been cancelled.\n\n"
+                    "We apologize for the inconvenience.\n\n"
+                    "Regards,\nEvent Portal Team"
+                )
+            )
+            mail.send(msg)
+
+        return jsonify({"message": "Cancellation emails sent successfully"}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Failed to send cancellation emails"}), 500

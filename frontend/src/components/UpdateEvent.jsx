@@ -30,8 +30,8 @@ const UpdateEvent = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   const categories = [
-    'Conference', 'Workshops', 'Seminar', 'Concert',
-    'Festival', 'Networking', 'Sports', 'Other'
+    'Conference', 'Workshops', 'Meetups',
+    'Festivals'
   ];
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const UpdateEvent = () => {
         setFormData({
           title: event.title,
           description: event.description,
-          category: event.categoty,
+          category: event.category,
           capacity: event.capacity,
           venue: event.venue,
           price: event.price,
@@ -128,7 +128,7 @@ const UpdateEvent = () => {
       venue: formData.venue,
       price: formData.price ? parseFloat(formData.price) : 0,
       date: formData.date,
-      categoty: formData.category
+      category: formData.category
     };
 
     const token = localStorage.getItem('access_token');
@@ -390,7 +390,7 @@ const UpdateEvent = () => {
                 ? 'bg-indigo-400 cursor-not-allowed' 
                 : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg transform hover:-translate-y-0.5'}`}
           >
-            {isUploading ? 'Processing...' : 'Create Event'}
+            {isUploading ? 'Processing...' : 'Update Event'}
           </button>
         </div>
       </form>

@@ -30,8 +30,8 @@ const EventCreationForm = () => {
   });
 
   const categories = [
-    'Conference', 'Workshops', 'Seminar', 'Concert', 
-    'Festival', 'Networking', 'Sports', 'Other'
+    'Conference', 'Workshops', 'Meetups',
+    'Festivals'
   ];
 
   const handleChange = (e) => {
@@ -135,7 +135,7 @@ const EventCreationForm = () => {
       venue: formData.venue,
       price: formData.price ? parseFloat(formData.price) : 0,
       date: formData.date,
-      categoty: formData.category // Make sure this matches your backend field name
+      category: formData.category // Make sure this matches your backend field name
     };
 
     const token = localStorage.getItem('access_token');
@@ -153,7 +153,7 @@ const EventCreationForm = () => {
             "venue": formattedData.venue,
             "price": formattedData.price,
             "date":formattedData.date,
-            "categoty":formattedData.categoty
+            "category":formattedData.category
         }
        ,
         {

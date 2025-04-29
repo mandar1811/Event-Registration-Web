@@ -26,6 +26,7 @@ const EventCard = ({ event }) => {
     return `Rs ${price.toFixed(2)}`;
   };
   
+  // console.log(event)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -49,7 +50,7 @@ const EventCard = ({ event }) => {
 
   return (
     <Link
-      to={`/event/${event.id}`}
+      to={`/event/${event.id || event.event_id}`}
       className="block group" 
       aria-label={`View details for ${event.title}`}
     >
