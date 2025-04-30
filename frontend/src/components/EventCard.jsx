@@ -151,7 +151,7 @@ const EventCard = ({ event, onDelete }) => {
                   )}
                   <div className="flex items-center space-x-2 bg-indigo-50 px-4 py-2 rounded-md group-hover:bg-indigo-100 group-hover:shadow-md transition">
                     <span
-                      className={`text-lg font-semibold ${
+                      className={`text-base font-semibold ${
                         event.price === 0 ? "text-emerald-600" : "text-indigo-600"
                       }`}
                     >

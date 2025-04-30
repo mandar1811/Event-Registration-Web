@@ -64,6 +64,7 @@ function TicketFormModal({ show, setShow, event, isLoading, setIsLoading }) {
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
+      setShow(false)
     }
   };
 

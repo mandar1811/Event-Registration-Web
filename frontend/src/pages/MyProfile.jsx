@@ -66,7 +66,7 @@ const MyProfile = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+      className="w-[90%] md:w-[85%] mx-auto "
     >
       <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg mb-10">
         <div className="px-8 py-10">
