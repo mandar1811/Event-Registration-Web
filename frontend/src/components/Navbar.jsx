@@ -6,12 +6,15 @@ import { Calendar } from "lucide-react";
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isAdminPage = location.pathname.startsWith("/dashboard") || location.pathname.startsWith("/admin");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef();
   const navbarHeight = useRef(0);
 
   const access_token = localStorage.getItem("access_token");
+
+  if (isAdminPage) return null
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -70,6 +73,7 @@ function Navbar() {
       clearTimeout(timeoutId);
     };
   }, []);
+
 
   return (
     <nav 
