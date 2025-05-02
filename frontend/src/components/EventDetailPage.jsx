@@ -22,6 +22,7 @@ function EventDetailPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [userRegistered, setUserRegistered] = useState(false);
 
   // Fetch event data
   const getData = async (id) => {
@@ -45,10 +46,43 @@ function EventDetailPage() {
     }
   };
 
+  // Function to check registration status
+  const checkRegistrationStatus = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      setUserRegistered(false);
+      return;
+    }
+    
+    try {
+      const response = await axios.get("http://localhost:5000/my-registrations", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      // Update registration status if user is registered for this event
+      const isRegistered = response.data.some(reg => reg.event_id === parseInt(id));
+      setUserRegistered(isRegistered);
+      
+      // Update session storage to match the current state
+      if (isRegistered) {
+        sessionStorage.setItem(`registration-success-${id}`, 'true');
+      } else {
+        sessionStorage.removeItem(`registration-success-${id}`);
+      }
+    } catch (error) {
+      console.error("Error checking registration status:", error);
+      setUserRegistered(false);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getData(id);
     getAllEvent();
+    checkRegistrationStatus();
+    
+    // Listen for registration status changes
+    window.addEventListener('registration-updated', checkRegistrationStatus);
     
     // Add Google Fonts to document head
     const linkPoppins = document.createElement('link');
@@ -65,6 +99,7 @@ function EventDetailPage() {
     return () => {
       document.head.removeChild(linkPoppins);
       document.head.removeChild(linkPlayfair);
+      window.removeEventListener('registration-updated', checkRegistrationStatus);
     };
   }, [id]);
 
@@ -74,9 +109,7 @@ function EventDetailPage() {
       Conference: "bg-blue-100 text-blue-800 border-blue-200",
       Workshops: "bg-green-100 text-green-800 border-green-200",
       Meetups: "bg-purple-100 text-purple-800 border-purple-200",
-      Festivals: "bg-orange-100 text-orange-800 border-orange-200",
-      Concert: "bg-pink-100 text-pink-800 border-pink-200",
-      Exhibition: "bg-indigo-100 text-indigo-800 border-indigo-200",
+      Festivals: "bg-orange-100 text-orange-800 border-orange-200"
     };
 
     return categoryColors[category] || "bg-gray-100 text-gray-800 border-gray-200";
@@ -107,6 +140,30 @@ function EventDetailPage() {
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
+  };
+
+  const handleTicketButtonClick = () => {
+    if (userRegistered) {
+      // If already registered, just show the success notification
+      const successNotificationElement = document.createElement('div');
+      successNotificationElement.className = "fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50 flex items-center animate-fade-in-up";
+      successNotificationElement.innerHTML = `
+        <div class="mr-2 text-2xl">✓</div>
+        <div>
+          <p class="font-bold">Already Registered!</p>
+          <p class="text-sm">You're already registered for ${event.title}</p>
+        </div>
+      `;
+      document.body.appendChild(successNotificationElement);
+      
+      // Remove notification after 3 seconds
+      setTimeout(() => {
+        document.body.removeChild(successNotificationElement);
+      }, 3000);
+    } else {
+      // Only open modal if not registered
+      setShowTicketForm(true);
+    }
   };
 
   if (isLoading) {
@@ -157,7 +214,7 @@ function EventDetailPage() {
      }}>
       {/* Sticky Header with Backdrop Blur */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="w-[90%] md:w-[85%] mx-auto py-4">
           <div className="flex items-center justify-between">
             <Link to="/allEvents" className="inline-flex items-center text-gray-700 hover:text-purple-600 transition-colors font-medium">
               <ArrowLeft className="w-5 h-5 mr-2" />
@@ -200,7 +257,7 @@ function EventDetailPage() {
         
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20"></div>
         
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-12 max-w-7xl mx-auto">
+        <div className="absolute bottom-0 left-0 right-0 p-6 w-[90%] md:w-[85%] mx-auto">
           <div className="max-w-4xl">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -236,7 +293,7 @@ function EventDetailPage() {
       </motion.div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-[90%] md:w-[85%] mx-auto  py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Details */}
           <motion.div 
@@ -360,10 +417,10 @@ function EventDetailPage() {
               </div>
               
               <button
-                onClick={() => setShowTicketForm(true)}
+                onClick={handleTicketButtonClick}
                 className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center"
               >
-                Get Ticket Now
+                {userRegistered ? "Already Registered" : "Get Ticket Now"}
               </button>
               
               <div className="mt-6 text-center">
@@ -416,6 +473,8 @@ function EventDetailPage() {
         event={event}
         isLoading={isLoading}
         setIsLoading={setIsLoading}
+        userRegistered={userRegistered}
+        setUserRegistered={setUserRegistered}
       />
     </div>
   );
