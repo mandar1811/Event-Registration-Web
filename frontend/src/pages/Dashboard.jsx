@@ -56,7 +56,7 @@ export default function Dashboard() {
     };
 
     fetchCounts();
-  }, []);
+  }, [activeTab]);
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}

@@ -197,7 +197,7 @@ const Login = () => {
                 )}
               </button>
 
-              <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center justify-between mt-4 hidden">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
