@@ -25,8 +25,12 @@ module.exports = {
           '100%': { transform: 'translateY(0)' },
         },
         'fade-in-up': {
-          from: { transform: 'translateY(20px)', opacity: '0' },
-          to: { transform: 'translateY(0)', opacity: '1' },
+          from: { opacity: '0', transform: 'translateY(20px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in-up-3d': {
+          from: { opacity: '0', transform: 'translate3d(0, 20px, 0)' },
+          to: { opacity: '1', transform: 'translate3d(0, 0, 0)' },
         },
         'fade-in-out': {
           '0%': { opacity: '0', transform: 'scale(0.9)' },
@@ -41,6 +45,7 @@ module.exports = {
         shake: 'shake 0.6s ease-in-out',
         float: 'float 3s ease-in-out infinite',
         'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+        'fade-in-up-3d': 'fade-in-up-3d 0.4s ease-out forwards',
         'fade-in-out': 'fade-in-out 2.5s ease-in-out forwards',
       },
     },
