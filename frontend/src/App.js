@@ -19,6 +19,14 @@ const AppWrapper = () => {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith("/dashboard");
 
+  useEffect(() => {
+    // If on admin dashboard, remove navbar padding if it was set
+    if (isDashboard) {
+      document.documentElement.style.setProperty('--navbar-height', `0px`);
+      document.body.style.paddingTop = '0px';
+    }
+  }, [isDashboard]);
+
   return (
     <>
       {!isDashboard && <Navbar />}
@@ -27,13 +35,24 @@ const AppWrapper = () => {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={localStorage.getItem("is_admin") == 1 ? <Dashboard /> : <Notaccess />} />
           <Route path="/event/:id" element={<EventDetailPage />} />
           <Route path="/allEvents" element={<AllEvent />} />
           <Route path="/search" element={<SearchResults />} />
-          <Route path="/create-event" element={<CreateForm/>}/>
-          <Route path="/update-event/:eventId" element={<UpdateEvent/>}/>
-          <Route path="/profile" element={<MyProfile/>}></Route>
+          <Route path="/create-event" element={<CreateForm />} />
+          <Route path="/update-event/:eventId" element={<UpdateEvent />} />
+          <Route path="/profile" element={<MyProfile />} />
+
+          {/* Dashboard/Admin route */}
+          <Route
+            path="/dashboard"
+            element={
+              localStorage.getItem("is_admin") === "1" ? (
+                <Dashboard />
+              ) : (
+                <Notaccess />
+              )
+            }
+          />
         </Routes>
       </ScrollToTop>
       {!isDashboard && <Footer />}

@@ -5,9 +5,23 @@ function TicketFormModal({ show, setShow, event, isLoading, setIsLoading }) {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [userRegistrations, setUserRegistrations] = useState([]);
 
   useEffect(() => {
-    if (!show) {
+    const fetchRegistrations = async () => {
+      const token = localStorage.getItem("access_token");
+      try {
+        const response = await axios.get("http://localhost:5000/my-registrations", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUserRegistrations(response.data); // expects list of registrations with event_id
+      } catch (err) {
+        console.error("Failed to fetch registrations", err);
+      }
+    };
+
+    if (show) {
+      fetchRegistrations();
       setFormSubmitted(false);
       setError("");
       setFormData({ name: "", email: "", phone: "" });
@@ -36,16 +50,18 @@ function TicketFormModal({ show, setShow, event, isLoading, setIsLoading }) {
     }
 
     try {
-      const token=localStorage.getItem("access_token")
-      
-      await axios.post(`http://localhost:5000/events/${event.id}/register`,{},  {
+      const token = localStorage.getItem("access_token");
+
+      // Register user
+      await axios.post(`http://localhost:5000/events/${event.id}/register`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         }
       });
 
-      // Step 2: Send confirmation email
+     
+      // Send confirmation email
       const emailPayload = {
         user_name: formData.name,
         user_email: formData.email,
@@ -57,16 +73,19 @@ function TicketFormModal({ show, setShow, event, isLoading, setIsLoading }) {
         event_price: event.price === 0 ? "Free" : `Rs${event.price}`,
       };
       await axios.post("http://localhost:5000/send-confirmation", emailPayload);
-
       setFormSubmitted(true);
     } catch (err) {
       console.error("Error:", err);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
-      setShow(false)
+      setShow(false);
     }
   };
+
+  const isAlreadyRegistered = userRegistrations.some(
+    (reg) => reg.event_id === event.id
+  );
 
   if (!show) return null;
 
@@ -131,12 +150,22 @@ function TicketFormModal({ show, setShow, event, isLoading, setIsLoading }) {
                 <strong>Price:</strong> {event.price === 0 ? "Free" : `Rs${event.price}`}
               </div>
 
+              {isAlreadyRegistered && (
+                <div className="text-sm text-blue-600 mb-4">
+                  You have already registered for this event.
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-                disabled={isLoading}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
+                disabled={isLoading || isAlreadyRegistered}
               >
-                {isLoading ? "Processing..." : "Register"}
+                {isAlreadyRegistered
+                  ? "Already Registered"
+                  : isLoading
+                  ? "Processing..."
+                  : "Register"}
               </button>
             </form>
           </>
