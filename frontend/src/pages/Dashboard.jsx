@@ -71,7 +71,7 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("dashboard")}
                 className={`flex items-center w-full px-4 py-3 ${
                   activeTab === "dashboard"
-                    ? "bg-blue-700"
+                    ? "bg-gradient-to-r from-purple-600 to-indigo-600"
                     : "hover:bg-gray-700"
                 }`}
               >
@@ -83,7 +83,7 @@ export default function Dashboard() {
               <button
                 onClick={() => setActiveTab("events")}
                 className={`flex items-center w-full px-4 py-3 ${
-                  activeTab === "events" ? "bg-blue-700" : "hover:bg-gray-700"
+                  activeTab === "events" ? "bg-gradient-to-r from-purple-600 to-indigo-600" : "hover:bg-gray-700"
                 }`}
               >
                 <Calendar size={18} className="mr-3" />
@@ -95,7 +95,7 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("registrations")}
                 className={`flex items-center w-full px-4 py-3 ${
                   activeTab === "registrations"
-                    ? "bg-blue-700"
+                    ? "bg-gradient-to-r from-purple-600 to-indigo-600"
                     : "hover:bg-gray-700"
                 }`}
               >
@@ -107,7 +107,7 @@ export default function Dashboard() {
               <button
                 onClick={() => setActiveTab("users")}
                 className={`flex items-center w-full px-4 py-3 ${
-                  activeTab === "users" ? "bg-blue-700" : "hover:bg-gray-700"
+                  activeTab === "users" ? "bg-gradient-to-r from-purple-600 to-indigo-600" : "hover:bg-gray-700"
                 }`}
               >
                 <Users size={18} className="mr-3" />
@@ -147,7 +147,7 @@ export default function Dashboard() {
             }
            
             {activeTab === "events" && (
-              <Link to={"/create-event"} className="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
+              <Link to={"/create-event"} className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded flex items-center">
                 <CirclePlus size={18} className="mr-2" />
                 Add Event
               </Link>

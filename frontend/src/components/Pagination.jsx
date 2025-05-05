@@ -48,7 +48,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
               <button
                 onClick={() => paginate(num)}
                 className={`px-3 py-1 rounded-md border text-sm ${
-                  currentPage === num ? 'bg-blue-500 text-white' : 'hover:bg-blue-100'
+                  currentPage === num ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' : 'hover:bg-blue-100'
                 }`}
               >
                 {num}

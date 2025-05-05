@@ -182,7 +182,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 transform hover:translate-y-px hover:shadow-lg"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 transform hover:translate-y-px hover:shadow-lg"
               >
                 {loading ? (
                   <span className="flex items-center">
@@ -197,7 +197,7 @@ const Login = () => {
                 )}
               </button>
 
-              <div className="flex items-center justify-between mt-4 hidden">
+              <div className=" items-center justify-between mt-4 hidden">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
